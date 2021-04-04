@@ -7,21 +7,45 @@ import WebSocket from 'ws';
 
 const app = express();
 const port = process.env.PORT || 4000;
-const wss = new WebSocket.Server({port: 5000});
+const wss = new WebSocket.Server({ port: 5000 });
 
 app.use(morgan('tiny'));
 app.use(json());
 app.use(urlencoded({ extended: true }));
 app.use(cookieParser());
 
-wss.on("connection", ws => {
-    ws.send("Welcome New Client !!!");
 
-    setInterval(() =>{
-        ws.send("You will recieve this message at every 5 seconds !!!");
-    }, 5000)
+let interval: NodeJS.Timeout;
+let number = 0;
+wss.on("connection", ws => {
+    if (interval) {
+        clearInterval(interval);
+    }
+    // ws.send("Welcome New Client !!!");
+
+    interval = setInterval(() => {
+        // ws.send("Whatever");
+        ws.send(`Message nr ${number++}`)
+        
+    }, 2000);
+
+    ws.on("close", () => {
+        clearInterval(interval);
+    });
+
+
+
+
+    // ws.on('message', data => {
+    //     wss.clients.forEach(client => {
+    //         if (client.readyState === WebSocket.OPEN) {
+    //             client.send(data);
+    //         }
+    //     });
+    // });
 })
 
 app.listen(port, () => {
     console.log(`Server running on port: ${chalk.green(port)}`);
 });
+

@@ -16,11 +16,27 @@ app.use(morgan_1.default('tiny'));
 app.use(body_parser_1.json());
 app.use(body_parser_1.urlencoded({ extended: true }));
 app.use(cookie_parser_1.default());
+let interval;
+let number = 0;
 wss.on("connection", ws => {
-    ws.send("Welcome New Client !!!");
-    setInterval(() => {
-        ws.send("You will recieve this message at every 5 seconds !!!");
-    }, 5000);
+    if (interval) {
+        clearInterval(interval);
+    }
+    // ws.send("Welcome New Client !!!");
+    interval = setInterval(() => {
+        // ws.send("Whatever");
+        ws.send(`Message nr ${number++}`);
+    }, 2000);
+    ws.on("close", () => {
+        clearInterval(interval);
+    });
+    // ws.on('message', data => {
+    //     wss.clients.forEach(client => {
+    //         if (client.readyState === WebSocket.OPEN) {
+    //             client.send(data);
+    //         }
+    //     });
+    // });
 });
 app.listen(port, () => {
     console.log(`Server running on port: ${chalk_1.default.green(port)}`);
