@@ -8,6 +8,7 @@ import { dataChart } from "./data";
 import InvertColorsIcon from '@material-ui/icons/InvertColors';
 import { CircularProgressbar } from 'react-circular-progressbar';
 import 'react-circular-progressbar/dist/styles.css';
+import Thermometer from 'react-thermometer-component';
 
 const socket = new WebSocket('ws://localhost:5000');
 
@@ -160,18 +161,50 @@ function App() {
           </div>
         </Paper>
 
-        <div>
-          <Paper>
-
-          </Paper>
-          <Paper style={{ margin: 20 , width: 300}}>
+        <div style={{display: "flex"}}>
+          <Paper style={{ margin: 20, width: 300, height: 390, backgroundColor: "black" }}>
             <div style={{ paddingLeft: 20 }}>
-              <p className="card-title">Humidity</p>
+              <p className="card-title">Temperature</p>
               <div style={{
+                display: "flex",
+                flexDirection: "row",
+                alignItems: "center",
+                verticalAlign: "middle"
+              }}>
+                <div style={{
                   display: "flex",
                   flexDirection: "row",
                   alignItems: "center",
                   verticalAlign: "middle"
+                }}>
+                  <span style={{
+                    fontSize: 40,
+                    fontWeight: "bold",
+                    color: "#3e98d8"
+                  }}>23 °C</span>
+                </div>
+                <div style={{ width: 70, height: 70, marginLeft: 40, marginBottom: 10 }}>
+                  <Thermometer
+                    theme="dark"
+                    value="23"
+                    max="100"
+                    steps="3"
+                    format="°C"
+                    size="large"
+                    height="300"
+                  />
+                </div>
+              </div>
+            </div>
+          </Paper>
+          <Paper style={{ margin: 20, width: 300, height: 170, backgroundColor: "black" }}>
+            <div style={{ paddingLeft: 20 }}>
+              <p className="card-title">Humidity</p>
+              <div style={{
+                display: "flex",
+                flexDirection: "row",
+                alignItems: "center",
+                verticalAlign: "middle"
               }}>
                 <div style={{
                   display: "flex",
@@ -182,14 +215,14 @@ function App() {
                   <InvertColorsIcon style={{
                     fontSize: 40,
                     color: "#00e6e6"
-                  }}/>
+                  }} />
                   <span style={{
                     fontSize: 40,
                     fontWeight: "bold",
                     color: "#3e98d8"
                   }}>32%</span>
                 </div>
-                <div style={{ width: 70, height: 70, marginLeft: 40, marginBottom: 10}}>
+                <div style={{ width: 70, height: 70, marginLeft: 40, marginBottom: 10 }}>
                   <CircularProgressbar value={32} text={`${32}%`} />
                 </div>
               </div>
